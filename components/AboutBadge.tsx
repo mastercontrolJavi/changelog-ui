@@ -24,10 +24,7 @@ export default function AboutBadge() {
             className="w-full max-w-sm rounded-[8px] border border-[#2A2420] bg-[#161310] p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mb-4 flex items-start justify-between">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-[#4A3C30]">
-                Portfolio project
-              </p>
+            <div className="flex justify-end">
               <button
                 onClick={() => setOpen(false)}
                 className="font-mono text-[11px] text-[#4A3C30] hover:text-[#7A6A5A]"
