@@ -1,5 +1,7 @@
+"use client";
 import ChangelogEntry from "@/components/ChangelogEntry";
 import EmptyState from "@/components/EmptyState";
+import { useKeyboardNav } from "@/hooks/useKeyboardNav";
 import type { ChangelogEntry as ChangelogEntryType } from "@/lib/types";
 
 type ChangelogFeedProps = {
@@ -7,6 +9,8 @@ type ChangelogFeedProps = {
 };
 
 export default function ChangelogFeed({ entries }: ChangelogFeedProps) {
+  useKeyboardNav(entries.map((e) => e.id));
+
   if (entries.length === 0) {
     return <EmptyState />;
   }
@@ -14,8 +18,12 @@ export default function ChangelogFeed({ entries }: ChangelogFeedProps) {
   return (
     <div className="relative sm:before:absolute sm:before:bottom-0 sm:before:left-[4px] sm:before:top-0 sm:before:w-px sm:before:bg-[#2A2420]">
       <div className="flex flex-col gap-12">
-        {entries.map((entry) => (
-          <div key={entry.id} className="relative sm:pl-8">
+        {entries.map((entry, i) => (
+          <div
+            key={entry.id}
+            className="entry-animate relative sm:pl-8"
+            style={{ animationDelay: `${i * 30}ms` }}
+          >
             <span
               aria-hidden="true"
               className={`absolute top-[9px] hidden rounded-full sm:block ${

@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import ChangelogFeed from "@/components/ChangelogFeed";
 import Header from "@/components/Header";
+import SubscribeToast from "@/components/SubscribeToast";
+import AboutBadge from "@/components/AboutBadge";
 import { entries } from "@/lib/entries";
 import { parseFiltersFromParam } from "@/lib/tagConfig";
 
@@ -50,7 +52,7 @@ export default async function Home({ searchParams }: PageProps) {
       </main>
 
       <footer className="flex justify-center gap-2 px-6 py-12 font-mono text-[11px] leading-5 text-[#4A3C30]">
-        <a href="#" className="transition-colors hover:text-[#7A6A5A]">
+        <a href="/rss" className="transition-colors hover:text-[#7A6A5A]">
           Subscribe to RSS
         </a>
         <span aria-hidden="true">·</span>
@@ -61,6 +63,8 @@ export default async function Home({ searchParams }: PageProps) {
           javiertpadilla.com
         </a>
       </footer>
+      <SubscribeToast />
+      <AboutBadge />
     </div>
   );
 }
