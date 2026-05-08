@@ -28,6 +28,9 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Changelog",
   description: "A polished developer changelog interface built with Next.js.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
