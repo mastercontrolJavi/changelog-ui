@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import { format, parseISO } from "date-fns";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import TagBadge from "@/components/TagBadge";
+import CodeBlock from "@/components/CodeBlock";
 import type { ChangelogEntry as ChangelogEntryType } from "@/lib/types";
 
 type ChangelogEntryProps = {
@@ -9,6 +10,7 @@ type ChangelogEntryProps = {
 };
 
 const mdxComponents: NonNullable<MDXRemoteProps["components"]> = {
+  pre: CodeBlock,
   a: ({ href, ...props }: ComponentPropsWithoutRef<"a">) => {
     const isExternal = href?.startsWith("http");
 
