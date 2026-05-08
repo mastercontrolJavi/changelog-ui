@@ -40,7 +40,7 @@ export default function AboutBadge() {
             <p className="mb-4 font-sans text-[13px] leading-[1.7] text-[#7A6A5A]">
               A polished changelog interface built to demonstrate Design Engineer
               thinking. Companies like Supabase, Vercel, and Linear ship surfaces
-              exactly like this — release notes that are readable, filterable, and
+              exactly like this - release notes that are readable, filterable, and
               feel considered.
             </p>
 
@@ -54,7 +54,7 @@ export default function AboutBadge() {
               <kbd className="rounded-[3px] border border-[#2A2420] bg-[#0C0A08] px-1.5 py-0.5 font-mono text-[11px] text-[#D4A853]">
                 k
               </kbd>
-              ), and copy-on-code-blocks — the small details that separate a
+              ), and copy-on-code-blocks - the small details that separate a
               template from a shipped product.
             </p>
 
