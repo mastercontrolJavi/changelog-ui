@@ -28,10 +28,6 @@ export default async function ChangelogEntry({ entry }: ChangelogEntryProps) {
   const articleClassName = entry.highlight
     ? "rounded-[6px] border border-[#2A2420] border-l-2 border-l-[#D4A853] bg-[#0E0C09] p-6"
     : "";
-  const content = await MDXRemote({
-    source: entry.content,
-    components: mdxComponents,
-  });
 
   return (
     <article id={entry.id} className={articleClassName}>
@@ -66,7 +62,9 @@ export default async function ChangelogEntry({ entry }: ChangelogEntryProps) {
         ))}
       </div>
 
-      <div className="changelog-prose">{content}</div>
+      <div className="changelog-prose">
+        <MDXRemote source={entry.content} components={mdxComponents} />
+      </div>
     </article>
   );
 }

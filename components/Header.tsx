@@ -3,27 +3,12 @@
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { tagConfig, tagOrder } from "@/lib/tagConfig";
+import { parseFiltersFromParam, tagConfig, tagOrder } from "@/lib/tagConfig";
 import type { TagType } from "@/lib/types";
 
 type HeaderProps = {
   initialFilters: TagType[];
 };
-
-function parseFiltersFromParam(value: string | null): TagType[] {
-  if (!value) {
-    return [];
-  }
-
-  const selected = new Set(
-    value
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag): tag is TagType => tagOrder.includes(tag as TagType)),
-  );
-
-  return tagOrder.filter((tag) => selected.has(tag));
-}
 
 function areFiltersEqual(left: TagType[], right: TagType[]) {
   return left.length === right.length && left.every((tag, index) => tag === right[index]);
