@@ -12,7 +12,7 @@ export function GET() {
       <link>${baseUrl}/#${entry.id}</link>
       <guid isPermaLink="false">${entry.id}</guid>
       <pubDate>${new Date(entry.date).toUTCString()}</pubDate>
-      <description>${escapeXml(entry.version + " — " + entry.tags.join(", "))}</description>
+      <description>${escapeXml(entry.version + " - " + entry.tags.join(", "))}</description>
     </item>`
     )
     .join("");
