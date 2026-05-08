@@ -46,7 +46,7 @@ export default function SubscribeToast() {
 
       {state === "success" && (
         <div className="rounded-[6px] border border-[#1A3D28] bg-[#0E1F16] px-4 py-2 font-mono text-[12px] text-[#4ADE80]">
-          ✓ You're subscribed
+          ✓ You&apos;re subscribed
         </div>
       )}
 
