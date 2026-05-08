@@ -1,8 +1,8 @@
+import { Suspense } from "react";
 import ChangelogFeed from "@/components/ChangelogFeed";
 import Header from "@/components/Header";
 import { entries } from "@/lib/entries";
-import { tagOrder } from "@/lib/tagConfig";
-import type { TagType } from "@/lib/types";
+import { parseFiltersFromParam } from "@/lib/tagConfig";
 
 type PageProps = {
   searchParams?: {
@@ -10,20 +10,28 @@ type PageProps = {
   };
 };
 
-function parseInitialFilters(tags: string | string[] | undefined): TagType[] {
-  const rawTags = Array.isArray(tags) ? tags.join(",") : tags ?? "";
-  const requestedTags = new Set(
-    rawTags
-      .split(",")
-      .map((tag) => tag.trim())
-      .filter((tag): tag is TagType => tagOrder.includes(tag as TagType)),
+function FeedSkeleton() {
+  return (
+    <div className="flex flex-col gap-12">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="animate-pulse space-y-3">
+          <div className="h-3 w-16 rounded bg-[#2A2420]" />
+          <div className="h-5 w-3/4 rounded bg-[#2A2420]" />
+          <div className="h-3 w-24 rounded bg-[#2A2420]" />
+          <div className="space-y-2 pt-2">
+            <div className="h-3 w-full rounded bg-[#1E1916]" />
+            <div className="h-3 w-5/6 rounded bg-[#1E1916]" />
+          </div>
+        </div>
+      ))}
+    </div>
   );
-
-  return tagOrder.filter((tag) => requestedTags.has(tag));
 }
 
 export default async function Home({ searchParams }: PageProps) {
-  const activeFilters = parseInitialFilters(searchParams?.tags);
+  const rawTags = searchParams?.tags;
+  const tagsParam = Array.isArray(rawTags) ? rawTags.join(",") : rawTags ?? null;
+  const activeFilters = parseFiltersFromParam(tagsParam);
   const filteredEntries =
     activeFilters.length === 0
       ? entries
@@ -36,7 +44,9 @@ export default async function Home({ searchParams }: PageProps) {
       <Header initialFilters={activeFilters} />
 
       <main className="mx-auto max-w-[720px] px-6 pb-4 pt-14 sm:pt-16">
-        <ChangelogFeed entries={filteredEntries} />
+        <Suspense fallback={<FeedSkeleton />}>
+          <ChangelogFeed entries={filteredEntries} />
+        </Suspense>
       </main>
 
       <footer className="flex justify-center gap-2 px-6 py-12 font-mono text-[11px] leading-5 text-[#4A3C30]">

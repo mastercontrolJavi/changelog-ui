@@ -48,3 +48,11 @@ export const tagConfig = {
     border: string;
   }
 >;
+
+export function parseFiltersFromParam(value: string | null): TagType[] {
+  if (!value) return [];
+  const selected = new Set(
+    value.split(",").map((t) => t.trim()).filter((t): t is TagType => tagOrder.includes(t as TagType))
+  );
+  return tagOrder.filter((tag) => selected.has(tag));
+}
