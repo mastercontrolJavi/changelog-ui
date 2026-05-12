@@ -4,7 +4,7 @@ An editorial changelog interface built for developer audiences. Clean typography
 
 [Live Demo →](https://changelog.javiertpadilla.com/)
 
-![Changelog UI screenshot](./screenshot.png)
+![Changelog UI screenshot](public/screenshot.png)
 
 ## What it does
 
