@@ -1,18 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Changelog UI
 
-## Getting Started
+An editorial changelog interface built for developer audiences. Clean typography, tag filtering synced to URL params, and MDX-rendered entries.
 
-First, run the development server:
+[Live Demo →](https://changelog.javiertpadilla.com/)
 
-```bash
+![Changelog UI screenshot](./screenshot.png)
+
+## What it does
+
+A production-ready changelog UI with a focus on reading experience and developer tooling aesthetics. Built as a portfolio piece demonstrating design-to-code execution.
+
+- MDX-rendered changelog entries with custom component overrides
+- URL-synced tag filtering (shareable filtered views)
+- Highlight entry treatment with distinct visual hierarchy
+- Three-font editorial system: Newsreader (display), IBM Plex Sans (body), JetBrains Mono (UI labels)
+- Fully static, no database required
+
+## Stack
+
+Next.js 14 · TypeScript · Tailwind CSS · MDX · next-mdx-remote
+
+## Run locally
+
+\`\`\`bash
+git clone https://github.com/YOUR_USERNAME/changelog-ui
+cd changelog-ui
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
+
+## Design decisions
+
+- Tag state lives in the URL (`?tags=feature,fix`) so filtered views are shareable and back/forward navigation works correctly
+- Highlight entries get an amber left border treatment to differentiate major releases
+- Typography hierarchy is intentional: Newsreader for editorial weight, IBM Plex for readability, JetBrains Mono for labels only
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
