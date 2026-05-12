@@ -23,7 +23,7 @@ Next.js 14 · TypeScript · Tailwind CSS · MDX · next-mdx-remote
 ## Run locally
 
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/changelog-ui
+git clone https://github.com/mastercontrolJavi/changelog-ui
 cd changelog-ui
 npm install
 npm run dev
