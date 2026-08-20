@@ -2,9 +2,71 @@ import type { ChangelogEntry } from "./types";
 
 export const entries: ChangelogEntry[] = [
   {
+    id: "v2-7-0",
+    version: "v2.7.0",
+    date: "2026-08-12",
+    title: "The dashboard is now a command surface",
+    tags: ["design", "feature", "improved"],
+    highlight: true,
+    content: [
+      "## What changed",
+      "Navigation has been rebuilt around a single command surface. Every destination, project switch, and table action is reachable from one input, and the sidebar is now a shortcut rather than the only path.",
+      "",
+      "```bash",
+      "# open the command surface from anywhere",
+      "\u2318 K",
+      "```",
+      "",
+      "## Design notes",
+      "- Results rank by recency first, then by exact prefix, then fuzzily",
+      "- Every row states its keyboard path, so the palette teaches the shortcut it replaces",
+      "- Focus never leaves the input; arrow keys move a virtual cursor instead",
+      "- Motion is capped at 200ms and respects `prefers-reduced-motion`",
+      "",
+      "## Why it matters",
+      "Dashboards accumulate navigation. Rather than adding another level of nesting, this release flattens the whole surface into something searchable, which keeps the sidebar honest about what deserves permanent real estate.",
+    ].join("\n"),
+  },
+  {
+    id: "v2-6-1",
+    version: "v2.6.1",
+    date: "2026-07-01",
+    title: "Edge cold starts down 62% after runtime pre-warming",
+    tags: ["perf", "fix"],
+    content: [
+      "## Performance",
+      "The edge runtime now pre-warms a small pool of isolates per region and reuses compiled module graphs between invocations. Median cold start dropped from 340ms to 129ms across the sampled fleet.",
+      "",
+      "## Details",
+      "- Module graphs are cached per deployment hash instead of per invocation",
+      "- Regions with sustained traffic keep two warm isolates; idle regions keep none",
+      "- Fixed a case where a failed import poisoned the cache for later requests",
+      "",
+      "No configuration is required. Projects on dedicated compute see the same improvement without the pooling, since those isolates never fully drain.",
+    ].join("\n"),
+  },
+  {
+    id: "v2-6-0",
+    version: "v2.6.0",
+    date: "2026-06-09",
+    title: "Type generation documented end to end",
+    tags: ["docs", "improved"],
+    content: [
+      "## Documentation",
+      "The type generation guide now covers the full path from migration to a typed client, including the cases that used to require reading the source: composite types, generated columns, and schemas excluded from the public API.",
+      "",
+      "## Added",
+      "- A worked example that starts from an empty project and ends at a typed query",
+      "- Reference tables mapping every Postgres type to its emitted TypeScript type",
+      "- Guidance on committing generated types versus generating them in CI",
+      "",
+      "The CLI reference is now generated from the same source as `--help`, so the two can no longer drift.",
+    ].join("\n"),
+  },
+  {
     id: "v2-5-0",
     version: "v2.5.0",
-    date: "2024-06-18",
+    date: "2026-05-14",
     title: "Branch previews now ship with scoped environment secrets",
     tags: ["feature", "security"],
     highlight: true,
@@ -29,7 +91,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-4-3",
     version: "v2.4.3",
-    date: "2024-05-29",
+    date: "2026-04-22",
     title: "Resolved stale schema cache in generated client types",
     tags: ["fix"],
     content: [
@@ -45,7 +107,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-4-2",
     version: "v2.4.2",
-    date: "2024-05-13",
+    date: "2026-04-02",
     title: "Dashboard query traces now group by request lifecycle",
     tags: ["improved"],
     content: [
@@ -63,7 +125,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-4-1",
     version: "v2.4.1",
-    date: "2024-04-22",
+    date: "2026-03-11",
     title: "Realtime subscriptions now support row-level filtering",
     tags: ["feature", "improved"],
     content: [
@@ -93,7 +155,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-4-0",
     version: "v2.4.0",
-    date: "2024-03-26",
+    date: "2026-02-19",
     title: "Edge Functions gain first-class observability controls",
     tags: ["feature", "improved"],
     highlight: true,
@@ -124,7 +186,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-3-2",
     version: "v2.3.2",
-    date: "2024-02-28",
+    date: "2026-01-28",
     title: "Fixed connection retry loops in local development",
     tags: ["fix"],
     content: [
@@ -140,7 +202,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-2-0",
     version: "v2.2.0",
-    date: "2024-02-06",
+    date: "2025-12-16",
     title: "Service roles now require explicit project scopes",
     tags: ["breaking", "security"],
     content: [
@@ -162,7 +224,7 @@ export const entries: ChangelogEntry[] = [
   {
     id: "v2-1-3",
     version: "v2.1.3",
-    date: "2024-01-17",
+    date: "2025-11-25",
     title: "CLI migrations gain checksum validation",
     tags: ["improved", "security"],
     content: [
