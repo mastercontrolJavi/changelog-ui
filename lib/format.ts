@@ -13,7 +13,7 @@ export function entryYear(iso: string) {
   return format(parseISO(iso), "yyyy");
 }
 
-/** "3 days ago" / "today" — computed against a caller-supplied "now" so the
+/** "3 days ago" / "today" - computed against a caller-supplied "now" so the
  *  server and the client cannot disagree across a midnight boundary. */
 export function relativeDays(iso: string, now: Date) {
   const days = differenceInCalendarDays(now, parseISO(iso));
@@ -100,7 +100,7 @@ export interface ActivityMonth {
   key: string;
   /** "Aug" */
   label: string;
-  /** "August 2026" — used by the tooltip and the table view. */
+  /** "August 2026" - used by the tooltip and the table view. */
   fullLabel: string;
   count: number;
   versions: string[];

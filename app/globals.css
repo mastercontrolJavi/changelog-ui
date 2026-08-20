@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   THE PRESS ROOM — design system
+   THE PRESS ROOM - design system
    A changelog is a publication. This system treats the reading surface like a
    letterpress broadsheet (warm ink stock, gold foil stamping, optical serif
    masthead) and the studio like a composing room (monospace data, rules,
@@ -220,7 +220,7 @@
       color var(--dur-3) var(--ease-glide);
   }
 
-  /* Paper grain — a single fixed layer over everything, blended so it reads as
+  /* Paper grain - a single fixed layer over everything, blended so it reads as
      stock texture rather than an overlay. */
   body::before {
     content: "";
@@ -233,7 +233,7 @@
     mix-blend-mode: overlay;
   }
 
-  /* Vignette — pushes focus to the column of text. */
+  /* Vignette - pushes focus to the column of text. */
   body::after {
     content: "";
     position: fixed;
@@ -319,7 +319,7 @@
     font-feature-settings: "kern", "calt", "zero";
   }
 
-  /* Masthead — optically sized, tight, with a hint of wonk for character. */
+  /* Masthead - optically sized, tight, with a hint of wonk for character. */
   .masthead {
     font-family: var(--font-display), ui-serif, Georgia, serif;
     font-size: clamp(46px, 11vw, 116px);
@@ -336,7 +336,7 @@
     color: var(--accent);
   }
 
-  /* Small caps mono label — the workhorse for metadata. */
+  /* Small caps mono label - the workhorse for metadata. */
   .label {
     font-family: var(--font-mono), ui-monospace, monospace;
     font-size: 10px;
@@ -622,7 +622,7 @@
     border-bottom: 1px solid var(--line-subtle);
   }
 
-  /* Tag chip — colors come from the per-tag custom properties. */
+  /* Tag chip - colors come from the per-tag custom properties. */
   .tag {
     display: inline-flex;
     align-items: center;
@@ -911,7 +911,7 @@
     font-style: italic;
   }
 
-  /* Compact density — same content, tighter rhythm for scanning. */
+  /* Compact density - same content, tighter rhythm for scanning. */
   [data-density="compact"] .changelog-prose {
     margin-top: 12px;
   }
@@ -1104,6 +1104,67 @@
     color: var(--text-primary);
   }
 
+  /* Guided tour: one element cuts the hole and dims everything else, so the
+     spotlight cannot drift out of sync with the panel it is pointing at. */
+  .spotlight {
+    position: fixed;
+    z-index: 88;
+    border-radius: 12px;
+    pointer-events: none;
+    box-shadow:
+      0 0 0 2px var(--accent-line),
+      0 0 0 9999px rgb(3 2 2 / 68%);
+    transition:
+      top var(--dur-3) var(--ease-out-expo),
+      left var(--dur-3) var(--ease-out-expo),
+      width var(--dur-3) var(--ease-out-expo),
+      height var(--dur-3) var(--ease-out-expo);
+  }
+
+  [data-theme="light"] .spotlight {
+    box-shadow:
+      0 0 0 2px var(--accent-line),
+      0 0 0 9999px rgb(60 46 26 / 40%);
+  }
+
+  .tour-card {
+    position: fixed;
+    /* Above .scrim (90), which the centred steps use to dim the page; a lower
+       value lets the scrim swallow the card's own buttons. */
+    z-index: 92;
+    width: min(340px, calc(100vw - 32px));
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-overlay);
+    box-shadow: var(--rim), var(--shadow-xl);
+    animation: dialog-in var(--dur-3) var(--ease-out-expo) both;
+  }
+
+  .step-card {
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid var(--line-subtle);
+    border-radius: 10px;
+    background: var(--surface-raised);
+    box-shadow: var(--rim);
+  }
+
+  .step-num {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--accent-line);
+    border-radius: 999px;
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
   /* --------------------------------------------------------------- motion */
 
   @keyframes fade-in {
@@ -1184,7 +1245,7 @@
     animation: toast-in var(--dur-3) var(--ease-spring) both;
   }
 
-  /* Foil sweep — a slow specular pass across the masthead, like light moving
+  /* Foil sweep - a slow specular pass across the masthead, like light moving
      across a stamped surface. */
   .foil {
     background: linear-gradient(

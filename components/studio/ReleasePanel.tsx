@@ -154,7 +154,7 @@ export default function ReleasePanel({
           </div>
 
           <p className="label" style={{ letterSpacing: "0.06em" }}>
-            {suggestedBump} suggested — {bumpReason(items, suggestedBump)}
+            {suggestedBump} suggested - {bumpReason(items, suggestedBump)}
           </p>
         </div>
 
@@ -193,7 +193,7 @@ export default function ReleasePanel({
           </Field>
         </div>
 
-        <Field label="Summary — optional" htmlFor="studio-summary">
+        <Field label="Summary - optional" htmlFor="studio-summary">
           <textarea
             id="studio-summary"
             value={summary}
@@ -244,7 +244,7 @@ export default function ReleasePanel({
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="label">Tags — derived from what you included</span>
+          <span className="label">Tags - derived from what you included</span>
           <div className="flex flex-wrap gap-1.5">
             {tags.length === 0 ? (
               <span className="label">None yet</span>

@@ -48,7 +48,7 @@ export function applyBump(value: string, bump: Bump): string {
 
 /**
  * The bump the material justifies. Breaking changes force a major, anything
- * additive forces a minor, everything else is a patch — the rule every
+ * additive forces a minor, everything else is a patch - the rule every
  * semver-literate reader already expects.
  */
 export function inferBump(items: ParsedItem[]): Bump {

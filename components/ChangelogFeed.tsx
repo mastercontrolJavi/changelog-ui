@@ -63,7 +63,7 @@ export default function ChangelogFeed({
   ]);
 
   /* Filters live in the URL so a filtered view can be shared, but the list
-     itself re-renders locally — no round trip between a click and the result. */
+     itself re-renders locally - no round trip between a click and the result. */
   const syncUrl = useCallback((next: TagType[]) => {
     const params = new URLSearchParams(window.location.search);
     if (next.length) params.set("tags", next.join(","));

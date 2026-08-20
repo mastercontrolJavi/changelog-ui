@@ -51,7 +51,7 @@ export default function ItemList({
           className="px-4 py-10 text-center font-sans text-[13px] leading-6"
           style={{ color: "var(--text-faint)" }}
         >
-          Nothing parsed yet. Paste something above and press Parse — the
+          Nothing parsed yet. Paste something above and press Parse - the
           parser reads conventional commits, raw git log, and plain sentences.
         </p>
       ) : (

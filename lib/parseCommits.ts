@@ -113,7 +113,7 @@ function toSentence(text: string) {
   const trimmed = text.trim().replace(/\s+/g, " ");
   if (!trimmed) return trimmed;
   // Only lift the first letter when the word is not already an identifier or
-  // an acronym — "iOS build" and "gRPC client" should survive untouched.
+  // an acronym - "iOS build" and "gRPC client" should survive untouched.
   const [first] = trimmed.split(" ");
   const looksLikeCode = /[._/]|[a-z][A-Z]|^[A-Z]{2,}$/.test(first);
   const head = looksLikeCode ? trimmed : trimmed[0].toUpperCase() + trimmed.slice(1);

@@ -6,7 +6,7 @@ const NOTES: { term: string; detail: string }[] = [
   {
     term: "Type",
     detail:
-      "Fraunces carries the editorial voice — its optical-size axis lets one family set a 116px masthead and a 22px entry title without either looking stretched. IBM Plex Sans reads the prose, JetBrains Mono holds every number, tag, and key.",
+      "Fraunces carries the editorial voice - its optical-size axis lets one family set a 116px masthead and a 22px entry title without either looking stretched. IBM Plex Sans reads the prose, JetBrains Mono holds every number, tag, and key.",
   },
   {
     term: "Stock",
@@ -21,7 +21,7 @@ const NOTES: { term: string; detail: string }[] = [
   {
     term: "State",
     detail:
-      "Tag filters live in the URL so a filtered view is shareable, but filtering happens locally — the click and the result are the same frame. Theme and density are applied before first paint by an inline script, so a stored preference never flashes.",
+      "Tag filters live in the URL so a filtered view is shareable, but filtering happens locally - the click and the result are the same frame. Theme and density are applied before first paint by an inline script, so a stored preference never flashes.",
   },
   {
     term: "Motion",

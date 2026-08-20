@@ -342,7 +342,7 @@ const summary: VoicePreset = {
   cap: 3,
   line: (item) => toThirdPerson(expandJargon(item.subject)),
   lead: ({ total, version }) =>
-    `${version} — ${total} change${total === 1 ? "" : "s"} shipped.`,
+    `${version} - ${total} change${total === 1 ? "" : "s"} shipped.`,
 };
 
 export const voices: Record<Audience, VoicePreset> = {
@@ -362,7 +362,7 @@ export const voiceOrder: Audience[] = [
 /** Renders one item into a bullet for a given voice. */
 export function renderLine(item: ParsedItem, voice: VoicePreset): string {
   const body = voice.line(item);
-  const scope = voice.showScope && item.scope ? `**${item.scope}** — ` : "";
+  const scope = voice.showScope && item.scope ? `**${item.scope}** - ` : "";
   const refs = refSuffix(
     { ...item, pr: voice.showPr ? item.pr : null },
     voice.showHash,

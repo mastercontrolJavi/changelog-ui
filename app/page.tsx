@@ -23,7 +23,7 @@ export default function Home({ searchParams }: PageProps) {
 
   /* MDX is compiled here, on the server. The feed is a client component for
      the filtering and keyboard work, and receives the finished prose as a
-     slot — so next-mdx-remote never reaches the browser bundle. */
+     slot - so next-mdx-remote never reaches the browser bundle. */
   const items: FeedItem[] = entries.map((entry) => ({
     entry,
     relative: relativeDays(entry.date, now),

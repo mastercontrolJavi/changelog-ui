@@ -12,7 +12,7 @@ const PLOT_HEIGHT = 64;
 /**
  * Release cadence over the last year: one column per month, one series, so the
  * brand gold carries the data and every label stays in a text token. Empty
- * months keep their slot — the gaps are the point.
+ * months keep their slot - the gaps are the point.
  */
 export default function ReleaseRhythm({ months }: ReleaseRhythmProps) {
   const [hovered, setHovered] = useState<number | null>(null);

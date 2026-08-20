@@ -1,10 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import HowItWorks from "@/components/studio/HowItWorks";
 import ItemList from "@/components/studio/ItemList";
 import OutputPanel from "@/components/studio/OutputPanel";
 import ReleasePanel from "@/components/studio/ReleasePanel";
 import SourcePanel from "@/components/studio/SourcePanel";
+import Tour, { type TourStep } from "@/components/studio/Tour";
+import { SAMPLE_GITLOG } from "@/components/studio/samples";
 import { useApp } from "@/components/providers/AppProvider";
 import { parseSource, suggestTitle, tagsFromItems } from "@/lib/parseCommits";
 import { applyBump, inferBump } from "@/lib/semver";
@@ -19,6 +22,7 @@ import type {
 } from "@/lib/types";
 
 const STORAGE_KEY = "cl:studio";
+const TOUR_KEY = "cl:tour";
 
 type StudioProps = {
   /** Both supplied by the server so the first client render matches the HTML. */
@@ -56,13 +60,21 @@ export default function Studio({ today, latestVersion }: StudioProps) {
   const [audience, setAudience] = useState<Audience>("engineering");
   const [tab, setTab] = useState<"preview" | ExportFormat>("preview");
   const [restored, setRestored] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
 
   // Tracks whether the author has taken the title over from the suggester.
   const titleTouched = useRef(false);
 
-  /* Restore a draft after mount — never during render, so the server HTML and
+  // Latest values for callbacks that must not clobber existing work.
+  const sourceRef = useRef(source);
+  sourceRef.current = source;
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+
+  /* Restore a draft after mount - never during render, so the server HTML and
      the first client render stay identical. */
   useEffect(() => {
+    let hasDraft = false;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
@@ -79,7 +91,14 @@ export default function Studio({ today, latestVersion }: StudioProps) {
         if (saved.audience) setAudience(saved.audience);
         if (saved.tab) setTab(saved.tab);
         titleTouched.current = Boolean(saved.titleTouched);
+
+        hasDraft =
+          Boolean(saved.source?.trim()) ||
+          (Array.isArray(saved.items) && saved.items.length > 0);
       }
+
+      // Offer the tour once, and only to someone with nothing to lose.
+      if (!localStorage.getItem(TOUR_KEY) && !hasDraft) setTourOpen(true);
     } catch {
       /* Corrupt or blocked storage: start from a clean draft. */
     }
@@ -105,7 +124,7 @@ export default function Studio({ today, latestVersion }: StudioProps) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
-      /* Quota or private mode — the draft simply is not persisted. */
+      /* Quota or private mode - the draft simply is not persisted. */
     }
   }, [
     restored,
@@ -128,8 +147,9 @@ export default function Studio({ today, latestVersion }: StudioProps) {
   );
   const suggestedBump = useMemo(() => inferBump(items), [items]);
 
-  const parse = useCallback(() => {
-    const parsed = parseSource(source, mode);
+  const runParse = useCallback(
+    (text: string, sourceMode: SourceMode) => {
+    const parsed = parseSource(text, sourceMode);
     setItems(parsed);
 
     if (parsed.length === 0) {
@@ -147,7 +167,67 @@ export default function Studio({ today, latestVersion }: StudioProps) {
         : `${parsed.length} changes parsed`,
       "success",
     );
-  }, [source, mode, baseVersion, toast]);
+    },
+    [baseVersion, toast],
+  );
+
+  const parse = useCallback(
+    () => runParse(source, mode),
+    [runParse, source, mode],
+  );
+
+  /* The tour demonstrates rather than describes: it loads the sample and runs
+     the parse so every later step has something real to point at. */
+  const demoParse = useCallback(() => {
+    if (sourceRef.current.trim() || itemsRef.current.length > 0) return;
+    setSource(SAMPLE_GITLOG);
+    setMode("auto");
+    runParse(SAMPLE_GITLOG, "auto");
+  }, [runParse]);
+
+  const closeTour = useCallback(() => {
+    setTourOpen(false);
+    try {
+      localStorage.setItem(TOUR_KEY, "seen");
+    } catch {
+      /* The tour simply offers itself again next visit. */
+    }
+  }, []);
+
+  const tourSteps = useMemo<TourStep[]>(
+    () => [
+      {
+        title: "Turn commits into release notes",
+        body: "Four panels, about thirty seconds. I have loaded a real sample so every step has something to point at.",
+        onEnter: demoParse,
+      },
+      {
+        target: '[data-tour="source"]',
+        title: "Paste whatever you have",
+        body: "A git log, a list of commits, or plain sentences. Conventional commits are recognised, but they are not required: without a prefix the studio reads the wording to work out what kind of change it is.",
+      },
+      {
+        target: '[data-tour="changes"]',
+        title: "Curate the list",
+        body: "Each line gets a category you can change. Uncheck what should not ship, reword anything, reorder it. Notice the chore commit is already unchecked: housekeeping is parsed, never silently dropped.",
+      },
+      {
+        target: '[data-tour="release"]',
+        title: "The version is inferred",
+        body: "One commit here is marked breaking, so major is recommended and the number is filled in. Below that, a voice rewrites the same changes for a different reader. Switch between them and watch the preview.",
+      },
+      {
+        target: '[data-tour="output"]',
+        title: "Preview, then take it with you",
+        body: "Preview renders through the same components as the published feed, so it is exactly what ships. The other tabs are the same notes as Markdown, MDX, JSON and four more. Copy or download any of them.",
+      },
+      {
+        title: "That is the whole tool",
+        body: "Clear the draft, paste your own git log, and press Parse. Nothing leaves your browser, and your draft is saved as you go.",
+      },
+    ],
+    [demoParse],
+  );
 
   /* ⌘↵ parses from anywhere, including inside the textarea. */
   useEffect(() => {
@@ -237,7 +317,7 @@ export default function Studio({ today, latestVersion }: StudioProps) {
             >
               Paste a git log, a list of commits, or plain notes. The studio
               sorts them into changelog categories, infers the semver bump,
-              and writes the result in four voices across seven formats —
+              and writes the result in four voices across seven formats -
               entirely in your browser.
             </p>
           </div>
@@ -250,18 +330,25 @@ export default function Studio({ today, latestVersion }: StudioProps) {
 
       <hr className="rule" />
 
-      <div className="studio-grid pt-6">
+      <div className="pt-6">
+        <HowItWorks onStartTour={() => setTourOpen(true)} />
+      </div>
+
+      <div className="studio-grid">
         <div className="studio-rail flex flex-col gap-4">
-          <SourcePanel
+          <div data-tour="source">
+            <SourcePanel
             source={source}
             mode={mode}
             parsedCount={items.length}
             onSourceChange={setSource}
             onModeChange={setMode}
             onParse={parse}
-          />
+            />
+          </div>
 
-          <ItemList
+          <div data-tour="changes">
+            <ItemList
             items={items}
             onToggle={(id) =>
               setItems((current) =>
@@ -278,11 +365,13 @@ export default function Studio({ today, latestVersion }: StudioProps) {
                 current.map((item) => ({ ...item, included })),
               )
             }
-          />
+            />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4">
-          <ReleasePanel
+          <div data-tour="release">
+            <ReleasePanel
             baseVersion={baseVersion}
             version={version}
             date={date}
@@ -307,11 +396,16 @@ export default function Studio({ today, latestVersion }: StudioProps) {
               titleTouched.current = false;
               setTitle(suggestTitle(items));
             }}
-          />
+            />
+          </div>
 
-          <OutputPanel draft={draft} tab={tab} onTabChange={setTab} />
+          <div data-tour="output">
+            <OutputPanel draft={draft} tab={tab} onTabChange={setTab} />
+          </div>
         </div>
       </div>
+
+      <Tour steps={tourSteps} open={tourOpen} onClose={closeTour} />
     </div>
   );
 }

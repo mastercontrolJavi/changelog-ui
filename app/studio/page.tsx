@@ -7,7 +7,7 @@ import { entries } from "@/lib/entries";
 export const metadata: Metadata = {
   title: "Studio",
   description:
-    "Turn a git log, a list of commits, or plain notes into publishable release notes — in four voices and seven formats, entirely in the browser.",
+    "Turn a git log, a list of commits, or plain notes into publishable release notes - in four voices and seven formats, entirely in the browser.",
 };
 
 export default function StudioPage() {
