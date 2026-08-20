@@ -73,7 +73,26 @@ export default function Tour({ steps, open, onClose }: TourProps) {
     const element = target ? document.querySelector(target) : null;
 
     if (element) {
-      element.scrollIntoView({ block: "center", behavior: "smooth" });
+      // A panel taller than the viewport has no "centered" position that
+      // keeps its top in view, so tall targets scroll to their start instead
+      // - offset past the sticky header, which "start" would otherwise tuck
+      // the panel's top edge behind.
+      const tall = element.getBoundingClientRect().height > window.innerHeight;
+      if (tall) {
+        const headerH = parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--header-h",
+          ),
+        ) || 0;
+        const top =
+          element.getBoundingClientRect().top +
+          window.scrollY -
+          headerH -
+          PADDING * 2;
+        window.scrollTo({ top, behavior: "smooth" });
+      } else {
+        element.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
     }
 
     // Measure after the smooth scroll has had a chance to settle.
