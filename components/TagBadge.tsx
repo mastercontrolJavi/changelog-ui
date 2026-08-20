@@ -1,28 +1,23 @@
-import type { CSSProperties } from "react";
-import { tagConfig } from "@/lib/tagConfig";
+import { tagConfig, tagVars } from "@/lib/tagConfig";
 import type { TagType } from "@/lib/types";
 
 type TagBadgeProps = {
   tag: TagType;
-  size?: "sm" | "md";
+  /** Shows the colour dot; useful when several tags sit in a row. */
+  dot?: boolean;
+  title?: string;
 };
 
-export default function TagBadge({ tag, size = "sm" }: TagBadgeProps) {
+export default function TagBadge({ tag, dot = true, title }: TagBadgeProps) {
   const config = tagConfig[tag];
-  const padding = size === "md" ? "4px 10px" : "2px 8px";
 
   return (
     <span
-      className="inline-flex items-center rounded-[3px] border font-mono text-[11px] font-medium leading-[16px]"
-      style={
-        {
-          backgroundColor: config.background,
-          borderColor: config.border,
-          color: config.color,
-          padding,
-        } satisfies CSSProperties
-      }
+      className="tag"
+      style={tagVars(tag)}
+      title={title ?? config.blurb}
     >
+      {dot ? <span className="tag-dot" aria-hidden="true" /> : null}
       {config.label}
     </span>
   );
