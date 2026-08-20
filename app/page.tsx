@@ -1,70 +1,51 @@
-import { Suspense } from "react";
-import ChangelogFeed from "@/components/ChangelogFeed";
+import ChangelogFeed, { type FeedItem } from "@/components/ChangelogFeed";
 import Header from "@/components/Header";
-import SubscribeToast from "@/components/SubscribeToast";
-import AboutBadge from "@/components/AboutBadge";
+import Hero from "@/components/Hero";
+import MdxBody from "@/components/MdxBody";
+import SiteFooter from "@/components/SiteFooter";
 import { entries } from "@/lib/entries";
+import { computeStats, monthlyActivity, relativeDays } from "@/lib/format";
 import { parseFiltersFromParam } from "@/lib/tagConfig";
 
 type PageProps = {
-  searchParams?: {
-    tags?: string | string[];
-  };
+  searchParams?: { tags?: string | string[] };
 };
 
-function FeedSkeleton() {
-  return (
-    <div className="flex flex-col gap-12">
-      {[...Array(3)].map((_, i) => (
-        <div key={i} className="animate-pulse space-y-3">
-          <div className="h-3 w-16 rounded bg-[#2A2420]" />
-          <div className="h-5 w-3/4 rounded bg-[#2A2420]" />
-          <div className="h-3 w-24 rounded bg-[#2A2420]" />
-          <div className="space-y-2 pt-2">
-            <div className="h-3 w-full rounded bg-[#1E1916]" />
-            <div className="h-3 w-5/6 rounded bg-[#1E1916]" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default async function Home({ searchParams }: PageProps) {
+export default function Home({ searchParams }: PageProps) {
   const rawTags = searchParams?.tags;
   const tagsParam = Array.isArray(rawTags) ? rawTags.join(",") : rawTags ?? null;
   const activeFilters = parseFiltersFromParam(tagsParam);
-  const filteredEntries =
-    activeFilters.length === 0
-      ? entries
-      : entries.filter((entry) =>
-          entry.tags.some((tag) => activeFilters.includes(tag)),
-        );
+
+  // One "now" for the whole render, so every relative date agrees.
+  const now = new Date();
+  const stats = computeStats(entries);
+  const activity = monthlyActivity(entries, 12, now);
+
+  /* MDX is compiled here, on the server. The feed is a client component for
+     the filtering and keyboard work, and receives the finished prose as a
+     slot - so next-mdx-remote never reaches the browser bundle. */
+  const items: FeedItem[] = entries.map((entry) => ({
+    entry,
+    relative: relativeDays(entry.date, now),
+    body: <MdxBody source={entry.content} />,
+  }));
 
   return (
-    <div id="top" className="min-h-screen bg-[#0C0A08]">
-      <Header initialFilters={activeFilters} />
+    <div id="top">
+      <Header />
 
-      <main className="mx-auto max-w-[720px] px-6 pb-4 pt-14 sm:pt-16">
-        <Suspense fallback={<FeedSkeleton />}>
-          <ChangelogFeed entries={filteredEntries} />
-        </Suspense>
+      <Hero
+        stats={stats}
+        latestId={entries[0].id}
+        activity={activity}
+        now={now}
+      />
+
+      <main className="pb-6">
+        <ChangelogFeed items={items} initialFilters={activeFilters} />
       </main>
 
-      <footer className="flex justify-center gap-2 px-6 py-12 font-mono text-[11px] leading-5 text-[#4A3C30]">
-        <a href="/rss" className="transition-colors hover:text-[#7A6A5A]">
-          Subscribe to RSS
-        </a>
-        <span aria-hidden="true">·</span>
-        <a
-          href="https://javiertpadilla.com"
-          className="transition-colors hover:text-[#7A6A5A]"
-        >
-          javiertpadilla.com
-        </a>
-      </footer>
-      <SubscribeToast />
-      <AboutBadge />
+      <SiteFooter />
     </div>
   );
 }

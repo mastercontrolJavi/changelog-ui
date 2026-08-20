@@ -2,57 +2,96 @@ import type { TagType } from "./types";
 
 export const tagOrder = [
   "feature",
-  "fix",
-  "breaking",
   "improved",
+  "fix",
+  "perf",
+  "design",
+  "breaking",
   "security",
+  "docs",
 ] as const satisfies readonly TagType[];
+
+type TagMeta = {
+  label: string;
+  /** One-line explanation, used in the filter tooltip and the studio legend. */
+  blurb: string;
+  /** Heading this tag contributes under Keep a Changelog conventions. */
+  section: string;
+  /** How much this tag pushes a semver bump. */
+  weight: 0 | 1 | 2;
+};
 
 export const tagConfig = {
   feature: {
     label: "feature",
-    background: "#0E1F16",
-    color: "#4ADE80",
-    border: "#1A3D28",
-  },
-  fix: {
-    label: "fix",
-    background: "#1A1020",
-    color: "#A78BFA",
-    border: "#2D1F40",
-  },
-  breaking: {
-    label: "breaking",
-    background: "#1F0E0E",
-    color: "#F87171",
-    border: "#3D1A1A",
+    blurb: "Something you could not do before",
+    section: "Added",
+    weight: 1,
   },
   improved: {
     label: "improved",
-    background: "#0E1620",
-    color: "#60A5FA",
-    border: "#1A2D40",
+    blurb: "Existing behaviour, made better",
+    section: "Changed",
+    weight: 0,
+  },
+  fix: {
+    label: "fix",
+    blurb: "A defect corrected",
+    section: "Fixed",
+    weight: 0,
+  },
+  perf: {
+    label: "perf",
+    blurb: "Same result, less time or memory",
+    section: "Performance",
+    weight: 0,
+  },
+  design: {
+    label: "design",
+    blurb: "Interface, interaction, or visual craft",
+    section: "Design",
+    weight: 0,
+  },
+  breaking: {
+    label: "breaking",
+    blurb: "Requires action before upgrading",
+    section: "Breaking changes",
+    weight: 2,
   },
   security: {
     label: "security",
-    background: "#1A1508",
-    color: "#FBBF24",
-    border: "#3D3010",
+    blurb: "Hardening or a disclosed vulnerability",
+    section: "Security",
+    weight: 1,
   },
-} as const satisfies Record<
-  TagType,
-  {
-    label: string;
-    background: string;
-    color: string;
-    border: string;
-  }
->;
+  docs: {
+    label: "docs",
+    blurb: "Documentation and examples",
+    section: "Documentation",
+    weight: 0,
+  },
+} as const satisfies Record<TagType, TagMeta>;
+
+/** Inline CSS variables so a tag chip re-colours itself with the theme. */
+export function tagVars(tag: TagType) {
+  return {
+    "--tag-fg": `var(--tag-${tag}-fg)`,
+    "--tag-bg": `var(--tag-${tag}-bg)`,
+    "--tag-line": `var(--tag-${tag}-line)`,
+  } as React.CSSProperties;
+}
+
+export function isTagType(value: string): value is TagType {
+  return (tagOrder as readonly string[]).includes(value);
+}
 
 export function parseFiltersFromParam(value: string | null): TagType[] {
   if (!value) return [];
   const selected = new Set(
-    value.split(",").map((t) => t.trim()).filter((t): t is TagType => tagOrder.includes(t as TagType))
+    value
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(isTagType),
   );
   return tagOrder.filter((tag) => selected.has(tag));
 }
