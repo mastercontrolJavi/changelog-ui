@@ -49,7 +49,7 @@ export default function SiteFooter() {
                 style={{ color: "var(--text-muted)" }}
               >
                 The RSS feed is live and real. The email field is part of the
-                demo — nothing is stored or sent.
+                demo - nothing is stored or sent.
               </p>
             </div>
 
@@ -78,7 +78,7 @@ export default function SiteFooter() {
                   style={{ color: "var(--tag-feature-fg)" }}
                   role="status"
                 >
-                  ✓ Demo only — no email was captured. Use RSS for real updates.
+                  ✓ Demo only - no email was captured. Use RSS for real updates.
                 </p>
               ) : null}
 

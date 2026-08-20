@@ -79,7 +79,7 @@ export default function AppProvider({
     try {
       localStorage.setItem("cl:theme", next);
     } catch {
-      /* storage blocked — the in-memory value still applies for this session */
+      /* storage blocked - the in-memory value still applies for this session */
     }
   }, []);
 

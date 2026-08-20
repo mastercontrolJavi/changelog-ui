@@ -5,8 +5,8 @@ import type { ReactNode } from "react";
 
    The public feed renders entries through MDX on the server. The preview needs
    the same output with zero latency while the author types, so it re-renders
-   the subset of markdown the generator can actually emit — headings, lists,
-   fences, and inline emphasis — into the same .changelog-prose styles. Same
+   the subset of markdown the generator can actually emit - headings, lists,
+   fences, and inline emphasis - into the same .changelog-prose styles. Same
    CSS in, same picture out.
    ------------------------------------------------------------------------ */
 
@@ -140,7 +140,7 @@ function toBlocks(source: string): Block[] {
     paragraph.push(line.trim());
   }
 
-  // An unterminated fence still renders — the author is probably mid-typing.
+  // An unterminated fence still renders - the author is probably mid-typing.
   if (fence) {
     blocks.push({ kind: "code", text: fence.lines.join("\n"), lang: fence.lang });
   }

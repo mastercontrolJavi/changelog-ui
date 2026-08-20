@@ -20,8 +20,8 @@ entries are compiled on the server and handed to the client as a slot, so
   sentences. Scopes, SHAs, PR refs, and `!` breaking markers are all recognised;
   housekeeping commits (`chore`, `ci`, `build`, `test`) are parsed but left
   unchecked rather than silently dropped.
-- **Infers the semver bump** from what the set actually contains — a breaking
-  change forces major, anything additive forces minor — and shows the resulting
+- **Infers the semver bump** from what the set actually contains - a breaking
+  change forces major, anything additive forces minor - and shows the resulting
   version for all three options with the reasoning spelled out.
 - **Writes in four voices.** The same commits, aimed at different readers:
   *Engineering* keeps scopes and SHAs; *Product* expands jargon, strips internal
@@ -41,33 +41,33 @@ feed**, so the entry you see is the entry you get.
 The concept is *the press room*: a changelog is a publication, so this one is set
 like one.
 
-- **Type** — Fraunces carries the editorial voice; its optical-size axis lets one
+- **Type** - Fraunces carries the editorial voice; its optical-size axis lets one
   family set a 116px masthead and a 22px entry title without either looking
   stretched. IBM Plex Sans reads the prose, JetBrains Mono holds every number,
   tag, and key.
-- **Two stocks, not one inverted** — *ink* is a warm near-black with gold foil;
+- **Two stocks, not one inverted** - *ink* is a warm near-black with gold foil;
   *newsprint* is a paper white with a darker, higher-contrast gold. Tag colours
   are redefined per theme rather than reused, so nothing drops below contrast in
   the light view.
-- **Texture** — a fixed SVG grain layer and a soft vignette in overlay blend mode.
+- **Texture** - a fixed SVG grain layer and a soft vignette in overlay blend mode.
   The difference between a screen and a printed surface, for one element.
-- **State** — tag filters live in the URL so a filtered view is shareable, but
+- **State** - tag filters live in the URL so a filtered view is shareable, but
   filtering happens locally: the click and the result are the same frame. Theme
   and density are applied before first paint by an inline script, so a stored
   preference never flashes.
-- **Motion** — one orchestrated page-load stagger, then scroll reveals from a
+- **Motion** - one orchestrated page-load stagger, then scroll reveals from a
   single `IntersectionObserver` for the whole feed. Everything is capped around
   340ms and collapses under `prefers-reduced-motion`.
 - **The cadence chart** is one series, so the brand gold carries the data, no
   legend restates the title, and every label stays in a text token. Empty months
-  keep their slot — the gaps are the point. A visually-hidden table carries the
+  keep their slot - the gaps are the point. A visually-hidden table carries the
   same numbers.
 
 ## Keyboard
 
 | Keys | Action |
 | --- | --- |
-| `⌘K` | Command bar — jump to a release, filter, or switch theme |
+| `⌘K` | Command bar - jump to a release, filter, or switch theme |
 | `?` | Shortcuts sheet |
 | `T` | Switch stock (ink ⇄ newsprint) |
 | `G` `H` / `G` `S` | Go to the feed / the studio |
@@ -88,7 +88,7 @@ Tailwind utilities still override it where a one-off is warranted.
 
 ```
 app/
-  page.tsx            feed — compiles MDX, passes it to the client as a slot
+  page.tsx            feed - compiles MDX, passes it to the client as a slot
   studio/page.tsx     the generator
   rss/route.ts        RSS 2.0 with full content
 lib/

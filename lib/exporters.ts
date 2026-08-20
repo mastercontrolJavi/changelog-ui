@@ -181,7 +181,7 @@ function toSlack(draft: ReleaseDraft): string {
     plain(text).replace(/\*\*(.+?)\*\*/g, "*$1*");
 
   const blocks = [
-    `*${draft.version}* — ${draft.title}`,
+    `*${draft.version}* - ${draft.title}`,
     toMrkdwn(summary),
     ...sections.map((section) => {
       const lines = section.items

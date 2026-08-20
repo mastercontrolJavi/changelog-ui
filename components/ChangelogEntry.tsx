@@ -30,7 +30,7 @@ export default function ChangelogEntry({
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
-      /* Clipboard unavailable — the anchor link still works. */
+      /* Clipboard unavailable - the anchor link still works. */
     }
   };
 
